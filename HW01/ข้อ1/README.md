@@ -6,3 +6,4 @@
 X = [0,2]
 y = [0,2]
 ```
+![sample Data](image/Sample_Data.png)
