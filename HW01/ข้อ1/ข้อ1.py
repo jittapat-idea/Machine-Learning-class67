@@ -42,12 +42,15 @@ def gradient_descent(X, y, theta0, theta1, alpha, iterations):
         for i in range(m):
             y_pred = theta0 + theta1 * X[i]
             error = y_pred - y[i]
-
+            
+            #หาค่าผลรวม Gradient
             sum_errors_theta0 = sum_errors_theta0 + error
             sum_errors_theta1 = sum_errors_theta1 + error * X[i]
 
+        #ปรับค่า w0,w1 จากสมการ w0(ใหม่) = w0(เก่า) - learningRate * 1/จำนวนข้อมูล * ผลรวม Gradient
         theta0 -= alpha * (1/m) * sum_errors_theta0 #i-=1 หรือ i=i-1
         theta1 -= alpha * (1/m) * sum_errors_theta1 
+        # เก็บค่าเพื่อเอาไป plot กราฟ
         cost_history.append(cost_function(X, y, theta0, theta1))
         theta0_history.append(theta0)
         theta1_history.append(theta1)
