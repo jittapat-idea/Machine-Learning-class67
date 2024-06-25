@@ -70,10 +70,6 @@ randomTheta0 = np.linspace(-10, 10, 100)
 randomTheta1 = np.linspace(-1, 3, 100)
 
 #คำนวณค่า Cost Function สำหรับแต่ละคู่ w0 กับ w1
-# box = np.zeros(randomTheta0.shape)
-# for i in range(len(randomTheta0)):
-#     for j in range(len(randomTheta1)):
-#         box[i, j] = cost_function(X, y, randomTheta0[i], randomTheta1[j])
 box = []
 for i in randomTheta0:
     row = []
