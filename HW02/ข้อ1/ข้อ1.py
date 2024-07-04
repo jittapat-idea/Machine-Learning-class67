@@ -84,3 +84,4 @@ for TrainSize in TrainSizes:
 #     print(f'Number of folds: {n_splits} - Mean RMSE: {mean_rmse:.4f}, Std RMSE: {std_rmse:.4f}')
 
 
+# การทดลองที่ 3 ทดสอบความเที่ยงตรงของวิธี fold cross-Validation
