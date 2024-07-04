@@ -14,59 +14,73 @@ Y = data[['Weight']].values
 
 # การทดลองที่ 1 ทดสอบความเที่ยงตรงของวิธี Holdout
 
-# def calculate_rmse(X,y,TrainSize,seed):
-#     Xtrain, X_test,Ytrain,Y_test = train_test_split(X,Y,train_size=TrainSize,random_state=seed)
-#     model = LinearRegression()
-#     model.fit(Xtrain, Ytrain)
-#     y_pred = model.predict(X_test)
-#     rmse = np.sqrt(mean_squared_error(Y_test,y_pred))
-#     return rmse
+def calculate_rmse(X,y,TrainSize,seed):
+    Xtrain, X_test,Ytrain,Y_test = train_test_split(X,Y,train_size=TrainSize,random_state=seed)
+    model = LinearRegression()
+    model.fit(Xtrain, Ytrain)
+    y_pred = model.predict(X_test)
+    rmse = np.sqrt(mean_squared_error(Y_test,y_pred))
+    return rmse
 
-# TrainSizes = [0.9, 0.8, 0.5, 0.2, 0.1]
-# seeds = range(1,11) #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-# result = {}
+TrainSizes = [0.9, 0.8, 0.5, 0.2, 0.1]
+seeds = range(1,11) #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+result = {}
 
-# for TrainSize in TrainSizes:
-#     rmses = []
-#     for seed in seeds:
-#         rmse = calculate_rmse(X, Y, TrainSize, seed)
-#         rmses.append(rmse)
-#     result[TrainSize] = rmses
+for TrainSize in TrainSizes:
+    rmses = []
+    for seed in seeds:
+        rmse = calculate_rmse(X, Y, TrainSize, seed)
+        rmses.append(rmse)
+    result[TrainSize] = rmses
 
-# sum = {TrainSize: {'mean_rmse':np.mean(rmses), 'SD_rmse':np.std(rmses)} for TrainSize, rmses in result.items()}
+#sum = {TrainSize: {'mean_rmse':np.mean(rmses), 'SD_rmse':np.std(rmses)} for TrainSize, rmses in result.items()}
+summary = {}
+for TrainSize, rmses in result.items():
+    mean_rmse = np.mean(rmses)
+    SD_rmse = np.std(rmses)
+    summary[TrainSize] ={'mean_rmse':mean_rmse, 'SD_rmse':SD_rmse}
 
-# for TrainSize in TrainSizes:
-#     mean = sum[TrainSize]['mean_rmse']
-#     std = sum[TrainSize]['SD_rmse']
-#     print(f'Train size: {TrainSize*100:.0f}% - Mean RMSE: {mean:.4f}, Std RMSE: {std:.4f}')
+for TrainSize in TrainSizes:
+    mean = summary[TrainSize]['mean_rmse']
+    std = summary[TrainSize]['SD_rmse']
+    print(f'Train size: {TrainSize*100:.0f}% - Mean RMSE: {mean:.4f}, Std RMSE: {std:.4f}')
 
 
 
 # การทดลองที่ 2 ทดสอบความเที่ยงตรงของวิธี fold cross-Validation
 
-def calculate_rmse_for_cv(X, y, n_splits, random_state):
-    kf = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)
-    model = LinearRegression()
-    mse_scores = cross_val_score(model, X, y, cv=kf, scoring='neg_mean_squared_error')
-    rmse_scores = np.sqrt(-mse_scores)
-    return rmse_scores
+# def calculate_rmse_for_cv(X, y, n_splits, random_state):
+#     kf = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)
+#     model = LinearRegression()
+#     mse_scores = cross_val_score(model, X, y, cv=kf, scoring='neg_mean_squared_error')
+#     rmse_scores = np.sqrt(-mse_scores)
+#     return rmse_scores
 
-folds = [10, 5, 3, 2]
-seeds = range(1, 11)
-results = {}
+# folds = [10, 5, 3, 2]
+# seeds = range(1, 11)
 
-for n_splits in folds:
-    all_rmse_scores = []
-    for seed in seeds:
-        rmse_scores = calculate_rmse_for_cv(X, Y, n_splits, seed)
-        all_rmse_scores.extend(rmse_scores)
-    results[n_splits] = all_rmse_scores
+# # สร้าง Dictionary สำหรับเก็บผลลัพธ์
+# results = {}
 
-# คำนวณค่าเฉลี่ยและค่าเบี่ยงเบนมาตรฐานสำหรับแต่ละจำนวน fold
-summary = {n_splits: {'mean_rmse': np.mean(rmse_scores), 'std_rmse': np.std(rmse_scores)} for n_splits, rmse_scores in results.items()}
+# # วน loop ตามจำนวน fold 10, 5, 3, 2
+# for n_splits in folds:
+#     all_rmse_scores = []
+#     # วน loop ตามจำนวน seed 1-10
+#     for seed in seeds:
+#         rmse_scores = calculate_rmse_for_cv(X, Y, n_splits, seed)# คำนวณค่า RMSE 
+#         all_rmse_scores.extend(rmse_scores)# เก็บค่า RMSE ที่คำนวณได้ลงใน all_rmse_scores
+#     results[n_splits] = all_rmse_scores# นำค่าที่เก็บได้มาเก็บใน Dictionary results
+
+# # คำนวณค่าเฉลี่ยและค่าเบี่ยงเบนมาตรฐานสำหรับแต่ละจำนวน fold
+# summary = {}
+# for n_splits, rmse_scores in results.items():
+#     mean_rmse = np.mean(rmse_scores)
+#     std_rmse = np.std(rmse_scores)
+#     summary[n_splits] = {'mean_rmse': mean_rmse, 'std_rmse': std_rmse}
+
+# for n_splits in folds:
+#     mean_rmse = summary[n_splits]['mean_rmse']
+#     std_rmse = summary[n_splits]['std_rmse']
+#     print(f'Number of folds: {n_splits} - Mean RMSE: {mean_rmse:.4f}, Std RMSE: {std_rmse:.4f}')
 
 
-for n_splits in folds:
-    mean_rmse = summary[n_splits]['mean_rmse']
-    std_rmse = summary[n_splits]['std_rmse']
-    print(f'Number of folds: {n_splits} - Mean RMSE: {mean_rmse:.4f}, Std RMSE: {std_rmse:.4f}')
