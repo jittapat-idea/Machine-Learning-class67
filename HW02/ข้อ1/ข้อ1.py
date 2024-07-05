@@ -31,18 +31,17 @@ for TrainSize in TrainSizes:
     for seed in seeds:
         rmse = Holdout(X, Y, TrainSize, seed)
         rmses.append(rmse)
-    result[TrainSize] = rmses
+    result[TrainSize] = rmses #{ค่า TrainSize:[ค่า RMSE ตาม Seed 1,....Seed 10]}
 
-#sum = {TrainSize: {'mean_rmse':np.mean(rmses), 'SD_rmse':np.std(rmses)} for TrainSize, rmses in result.items()}
+
 summary = {}
 for TrainSize, rmses in result.items():
     mean_rmse = np.mean(rmses)
     SD_rmse = np.std(rmses)
-    summary[TrainSize] ={'mean_rmse':mean_rmse, 'SD_rmse':SD_rmse}
+    summary[TrainSize] = [mean_rmse,SD_rmse]
 
 for TrainSize in TrainSizes:
-    mean = summary[TrainSize]['mean_rmse']
-    std = summary[TrainSize]['SD_rmse']
+    mean, std = summary[TrainSize] 
     print(f'Train size: {TrainSize*100:.0f}% - Mean RMSE: {mean:.4f}, Std RMSE: {std:.4f}')
 
 

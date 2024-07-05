@@ -56,23 +56,22 @@ summary_HO = {}
 for n_splits, rmse_scores in results_CrossV.items():
     mean_rmse = np.mean(rmse_scores)
     std_rmse = np.std(rmse_scores)
-    summary_CV[n_splits] = {'mean_rmse': mean_rmse, 'std_rmse': std_rmse}
+    summary_CV[n_splits] = [mean_rmse, std_rmse]
+
 
 for TrainSize, rmses in results_HoldOut.items():
     mean_rmse = np.mean(rmses)
     SD_rmse = np.std(rmses)
-    summary_HO[TrainSize] ={'mean_rmse':mean_rmse, 'SD_rmse':SD_rmse}
+    summary_HO[TrainSize] = [mean_rmse,SD_rmse]
 
 print("Results Summary")
 print("================")
-for n_splits in folds:
-    mean_rmse = summary_CV[n_splits]['mean_rmse']
-    std_rmse = summary_CV[n_splits]['std_rmse']
-    print(f'Number of folds: {n_splits} - Mean RMSE: {mean_rmse:.4f}, Std RMSE: {std_rmse:.4f}')
+for k_splits in folds:
+    mean_rmse ,std_rmse = summary_CV[k_splits]
+    print(f'Number of folds: {k_splits} - Mean RMSE: {mean_rmse:.4f}, Std RMSE: {std_rmse:.4f}')
 print("================")
 for TrainSize in TrainSizes:
-    mean = summary_HO[TrainSize]['mean_rmse']
-    std = summary_HO[TrainSize]['SD_rmse']
+    mean, std = summary_HO[TrainSize] 
     print(f'Train size: {TrainSize*100:.0f}% - Mean RMSE: {mean:.4f}, Std RMSE: {std:.4f}')
 
 
