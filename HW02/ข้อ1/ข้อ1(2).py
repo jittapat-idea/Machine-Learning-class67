@@ -20,7 +20,7 @@ def cross_Validation(X, y, k_splits, random_state):
     return rmse_scores
 
 folds = [10, 5, 3, 2]
-seeds = range(1, 11)
+seeds = range(1, 100)
 
 # สร้าง Dictionary สำหรับเก็บผลลัพธ์
 results = {}

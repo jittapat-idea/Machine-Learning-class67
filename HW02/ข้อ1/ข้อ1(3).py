@@ -28,7 +28,7 @@ def cross_Validation(X, y, n_splits, random_state):
 
 folds = [20, 10, 5, 3, 2]
 TrainSizes = [0.9, 0.8, 0.5, 0.2, 0.1]
-seeds = range(1,11)
+seeds = range(1,100)
 
 # สร้าง Dictionary สำหรับเก็บผลลัพธ์
 results_HoldOut = {}

@@ -33,7 +33,7 @@ def cross_Validation(X, y, random_state):
     rmse_scores = np.sqrt(-mse_scores)
     return rmse_scores
 
-seeds = range(1, 11)
+seeds = range(1, 500)
 resubstitution_rmse = []
 holdout_rmse = []
 cv_rmse = []

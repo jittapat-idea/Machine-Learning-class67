@@ -23,7 +23,7 @@ def Holdout(X,y,TrainSize,seed):
     return rmse
 
 TrainSizes = [0.9, 0.8, 0.5, 0.2, 0.1]
-seeds = range(1,11) #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+seeds = range(1,500) #[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 result = {}
 
 for TrainSize in TrainSizes:
