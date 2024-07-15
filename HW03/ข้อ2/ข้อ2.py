@@ -6,8 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import cross_val_score, KFold, GridSearchCV
 
-# โหลดข้อมูล sin_noiseless_10sample.csv
-data = pd.read_csv('/Users/jittapat.a/Documents/code/ปี4/ML/HW03/archive/sin_noisy_10sample.csv')
+
+data = pd.read_csv('/Users/jittapat.a/Documents/code/ปี4/ML/HW03/archive/sin_noisy_40sample.csv')
 
 X = data.iloc[:, 0].values.reshape(-1, 1)  # ฟีเจอร์ทั้งหมดที่ไม่ใช่ y
 y = data['noisy_y'].values  # คอลัมน์ y
@@ -17,7 +17,8 @@ param_grid = {'polynomialfeatures__degree': [1, 2, 3, 4, 5, 6, 7, 8]}
 
 def one_cross_Validation(X, y, k_splits, random_state,num):
     kf = KFold(n_splits=k_splits, shuffle=True, random_state=random_state)
-    model = make_pipeline(PolynomialFeatures(degree=num), LinearRegression())
+
+    model = make_pipeline(PolynomialFeatures(), LinearRegression())
     mse_scores = cross_val_score(model, X, y, cv=kf, scoring='neg_mean_squared_error')
     model.fit(X, y)
     y_pred = model.predict(X)
@@ -27,6 +28,7 @@ def one_cross_Validation(X, y, k_splits, random_state,num):
 def Nested_cross_Validation(X, y, k_splits, random_state):
     inner_cv = KFold(n_splits=k_splits, shuffle=True, random_state=random_state)
     outer_cv = KFold(n_splits=k_splits, shuffle=True, random_state=random_state)
+
     model = make_pipeline(PolynomialFeatures(), LinearRegression())
     grid_search = GridSearchCV(model, param_grid, cv=inner_cv, scoring='neg_mean_squared_error')
     nested_scores = cross_val_score(grid_search, X, y, cv=outer_cv, scoring='neg_mean_squared_error')
@@ -65,8 +67,8 @@ mean_nested = np.mean(all_nested_scores)
 std_nested = np.std(all_nested_scores)
 
 # แสดงค่า RMSE และ standard deviation
-print(f'one cross validation:\n mean = {mean_CV} \n Std = {std_CV}')
-print(f'nested cross validation:\n mean = {mean_nested} \n Std = {std_nested}')
+print(f'one cross validation:\n mean RMES = {mean_CV} \n Std = {std_CV}')
+print(f'nested cross validation:\n mean RMES = {mean_nested} \n Std = {std_nested}')
 
 # แสดงค่า hyperparameter ที่ดีที่สุดที่พบ
 print(f'Best hyperparameters found in Nested Cross Validation for each seed:')
